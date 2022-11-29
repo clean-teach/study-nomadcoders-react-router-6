@@ -1,15 +1,20 @@
-import { useParams, Link, Outlet } from 'react-router-dom';
+import { useParams, Link, Outlet, useOutletContext } from 'react-router-dom';
 import { users } from '../../db';
 
 function User() {
+    console.log(useOutletContext());
+
     const params = useParams();
+    const currentUser = users[Number(params.userId)-1].name;
     return (
         <>
-            <h1>{users[Number(params.userId)-1].name}</h1>
-            <p>User with id {params.userId} is named: {users[Number(params.userId)-1].name}</p>
+            <h1>{currentUser}</h1>
+            <p>User with id {params.userId} is named: {currentUser}</p>
             <hr />
             <Link to='followers'>See followers</Link>
-            <Outlet />
+            <Outlet context={{
+                nameOfMyUser : currentUser
+            }} />
         </>
     );
 }
